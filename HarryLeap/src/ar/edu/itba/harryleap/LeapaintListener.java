@@ -47,10 +47,10 @@ public class LeapaintListener extends Listener
 		//Get the most recent frame.
 		frame = controller.frame();
 		//Detect if fingers are present.
-		if (!frame.fingers().isEmpty())
+		if (!frame.tools().isEmpty())
 		{
 			//Retrieve the front-most finger.
-			Finger frontMost = frame.fingers().frontmost();
+			Tool frontMost = frame.tools().frontmost();
 			//Set up its position.
 			Vector position = new Vector(-1, -1, -1);
 			//Retrieve an interaction box so we can normalize the Leap's coordinates to match screen size.
