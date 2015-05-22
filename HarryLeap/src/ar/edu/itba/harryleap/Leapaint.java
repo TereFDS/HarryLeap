@@ -6,20 +6,23 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.event.ActionEvent;
-
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 import com.leapmotion.leap.Controller;
 
 public class Leapaint extends JFrame
@@ -55,6 +58,7 @@ public class Leapaint extends JFrame
 	//Panels that we'll be drawing on.
 	public JPanel buttonPanel;
 	public JPanel paintPanel;
+	public ImageManager backgroundImage = new ImageManager();
 	
 	Leapaint() { 
 		//Always call the superclass constructor when overriding Java Swing classes.
@@ -108,32 +112,37 @@ public class Leapaint extends JFrame
 		{
 		public void paintComponent(Graphics g)
 		{
-		super.paintComponent(g);
-		//Setup the graphics.
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setStroke(new BasicStroke(3));
-		
-		//Only start drawing if the user's finger is in view and not on the button panel.
-		if (z <= 0.5)
-			lines.add(new Line(prevX, prevY, x, y, inkColor));
-		//Draw all registered lines.
-		for (Line line : lines)
+			super.paintComponent(g);
+			BufferedImage bgImage = backgroundImage.getImage();
+			int x_image = 0, y_image = 0;
+			
+
+		    g.drawImage(bgImage, x_image, y_image, null);
+			//Setup the graphics.
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setStroke(new BasicStroke(3));
+			
+			//Only start drawing if the user's finger is in view and not on the button panel.
+			if (z <= 0.5)
+				lines.add(new Line(prevX, prevY, x, y, inkColor));
+			//Draw all registered lines.
+			for (Line line : lines)
+				{
+				g2.setColor(line.color);
+				g2.drawLine(line.startX, line.startY, line.endX, line.endY);
+				}
+				//Repaint all the buttons.
+			buttonPanel.repaint();
+			
+			//Draw the cursor if a finger is within in view.
+			if (z <= 0.95 && z != -1.0)
 			{
-			g2.setColor(line.color);
-			g2.drawLine(line.startX, line.startY, line.endX, line.endY);
-			}
-			//Repaint all the buttons.
-		buttonPanel.repaint();
-		
-		//Draw the cursor if a finger is within in view.
-		if (z <= 0.95 && z != -1.0)
-		{
-			//Set the cursor color to the inkColor if painting, and 		green otherwise.
-			g2.setColor((z <= 0.5) ? inkColor : new Color(0, 255, 153));
-			//Calculate cursor size based on depth for better feedback.
-			int cursorSize = (int) Math.max(20, 100 - z * 100);
-			//Create the cursor.
-			g2.fillOval(x, y, cursorSize, cursorSize);
+				//Set the cursor color to the inkColor if painting, and 		green otherwise.
+				g2.setColor((z <= 0.5) ? inkColor : new Color(0, 255, 153));
+				//Calculate cursor size based on depth for better feedback.
+				int cursorSize = (int) Math.max(20, 100 - z * 100);
+				//Create the cursor.
+				g2.fillOval(x, y, cursorSize, cursorSize);
 			}
 		}
 		};
@@ -144,7 +153,7 @@ public class Leapaint extends JFrame
 		//Add the panels to the primary frame.
 		getContentPane().add(buttonPanel, BorderLayout.NORTH);
 		getContentPane().add(paintPanel);
-		getContentPane().setBackground(Color.black);
+		//getContentPane().setBackground(Color.black);
 
 		//Make sure the application exits on close.
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

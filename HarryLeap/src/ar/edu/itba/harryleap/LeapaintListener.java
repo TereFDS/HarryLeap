@@ -106,11 +106,8 @@ public class LeapaintListener extends Listener
 				//If it's a circle gesture, print data for it.
 				if(gesture.type() == Gesture.Type.TYPE_SWIPE)
 				{
-					paint.getContentPane().setBackground(Color.blue);
-//					CircleGesture circleGesture = new CircleGesture(gesture);
-//					System.out.println("Detected Circle Gesture:" +
-//					"\nRadius: " + circleGesture.radius() +
-//					"\nRotations: " + circleGesture.progress());
+					paint.backgroundImage.changeImage();
+					//paint.getContentPane().setBackground(Color.blue);
 				} 
 
 			}
