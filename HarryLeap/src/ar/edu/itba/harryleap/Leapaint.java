@@ -140,9 +140,12 @@ public class Leapaint extends JFrame
 		
 		//Make sure the paint panel doesn't obscure any other elements.
 		paintPanel.setOpaque(false);
+		
 		//Add the panels to the primary frame.
 		getContentPane().add(buttonPanel, BorderLayout.NORTH);
 		getContentPane().add(paintPanel);
+		getContentPane().setBackground(Color.black);
+
 		//Make sure the application exits on close.
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//Set initial frame size and become visible.

@@ -1,5 +1,7 @@
 package ar.edu.itba.harryleap;
 
+import java.awt.Color;
+
 import com.leapmotion.leap.*;
 
 public class LeapaintListener extends Listener
@@ -46,6 +48,7 @@ public class LeapaintListener extends Listener
 		
 		//Get the most recent frame.
 		frame = controller.frame();
+		controller.enableGesture(Gesture.Type.TYPE_SWIPE);
 		//Detect if fingers are present.
 		if (!frame.tools().isEmpty())
 		{
@@ -93,7 +96,25 @@ public class LeapaintListener extends Listener
 			if (paint.button4.getBigBounds().contains((int) position.getX(),(int) position.getY()))
 				paint.button4.expand();
 			else paint.button4.canExpand = false;
-			}		
+		}
+		
+		if (!frame.gestures().isEmpty())
+		{
+			//Loop over all of the gestures detected by the Leap.
+			for (Gesture gesture : frame.gestures())
+			{
+				//If it's a circle gesture, print data for it.
+				if(gesture.type() == Gesture.Type.TYPE_SWIPE)
+				{
+					paint.getContentPane().setBackground(Color.blue);
+//					CircleGesture circleGesture = new CircleGesture(gesture);
+//					System.out.println("Detected Circle Gesture:" +
+//					"\nRadius: " + circleGesture.radius() +
+//					"\nRotations: " + circleGesture.progress());
+				} 
+
+			}
+		}
 	}
 	
 }
