@@ -117,7 +117,7 @@ public class Leapaint extends JFrame
 			int x_image = 0, y_image = 0;
 			
 
-		    g.drawImage(bgImage, x_image, y_image, null);
+		    g.drawImage(bgImage, x_image, y_image,getWidth(), getHeight(), this);
 			//Setup the graphics.
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setStroke(new BasicStroke(3));
