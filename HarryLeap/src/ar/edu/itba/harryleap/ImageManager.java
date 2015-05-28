@@ -28,14 +28,8 @@ public class ImageManager {
 	}
 	
 	public void changeImage(boolean stepForward){
-		if(stepForward){
-			index_image++;
-			index_image= (index_image%IMAGES_NUMBER)+1;
-		}
-		else{
-			index_image--;
-			index_image= (index_image%IMAGES_NUMBER)+1;
-		}
+		index_image++;
+		index_image= (index_image%IMAGES_NUMBER)+1;
 		try {
 			image = ImageIO.read(new File(IMAGES_PATH+ index_image +IMAGE_EXTENSION));
 		} catch (IOException e) {
