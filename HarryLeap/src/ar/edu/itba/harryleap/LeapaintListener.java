@@ -12,12 +12,17 @@ public class LeapaintListener extends Listener
 	public Frame frame;
 	//Leap interaction box.
 	private InteractionBox normalizedBox;
+
+	private long frameNumber;
+
+	boolean isSwiping;
 	//Constructor.
 	
 	public LeapaintListener(Leapaint newPaint)
 	{
 		//Assign the Leapaint instance.
 		paint = newPaint;
+		isSwiping = false;
 	}
 	
 	//Member Function: onInit
@@ -47,7 +52,10 @@ public class LeapaintListener extends Listener
 	System.out.println("Exited");
 	}
 	
-	public void onFrame(Controller controller) { 
+	public void onFrame(Controller controller) {
+
+		boolean changes = false;
+		frameNumber = (frameNumber + 1) % Integer.MAX_VALUE;
 		
 		//Get the most recent frame.
 		frame = controller.frame();
@@ -56,8 +64,11 @@ public class LeapaintListener extends Listener
 		//Detect if fingers are present.
 		if (!frame.tools().isEmpty())
 		{
+			changes = true;
+
 			//Retrieve the front-most finger.
 			Tool frontMost = frame.tools().frontmost();
+
 			//Set up its position.
 			Vector position = new Vector(-1, -1, -1);
 			//Retrieve an interaction box so we can normalize the Leap's coordinates to match screen size.
@@ -81,44 +92,51 @@ public class LeapaintListener extends Listener
 			paint.x = (int) position.getX();
 			paint.y = (int) position.getY();
 			paint.z = position.getZ();
-			
-			//Tell the painter to update.
-			paint.paintPanel.repaint();
+
 			//Check if the user is hovering over any buttons.
 			if (paint.button1.getBigBounds().contains((int) position.getX(),(int) position.getY()))
 				paint.button1.expand();
 			else paint.button1.canExpand = false;
-			
+
 			if (paint.button2.getBigBounds().contains((int) position.getX(),(int) position.getY()))
 				paint.button2.expand();
 			else paint.button2.canExpand = false;
-			
+
 			if (paint.button3.getBigBounds().contains((int) position.getX(),(int) position.getY()))
 				paint.button3.expand();
 			else paint.button3.canExpand = false;
-			
+
 			if (paint.button4.getBigBounds().contains((int) position.getX(),(int) position.getY()))
 				paint.button4.expand();
 			else paint.button4.canExpand = false;
 		}
-		
+
+		boolean hasSwipe = false;
 		if (!frame.gestures().isEmpty())
 		{
+			changes = true;
 			//Loop over all of the gestures detected by the Leap.
 			for (Gesture gesture : frame.gestures())
 			{
 				//If it's a circle gesture, print data for it.
-				if(gesture.type() == Gesture.Type.TYPE_SWIPE)
-				{
-					paint.backgroundImage.changeImage();
-					System.out.println("------------------------------------------------------------------------------");
-					//Tell the painter to update.
-					paint.paintPanel.repaint();
-					//paint.getContentPane().setBackground(Color.blue);
-				} 
+
+				if(gesture.type() == Gesture.Type.TYPE_SWIPE) {
+					hasSwipe = true;
+					if (!isSwiping) {
+						System.out.println("Changing image on frame: " + frameNumber);
+						paint.backgroundImage.changeImage(true);
+						isSwiping = true;
+					}
+				}
 
 			}
 		}
+		isSwiping = hasSwipe;
+
+		if (changes) {
+			//Tell the painter to update.
+			paint.paintPanel.repaint();
+		}
 	}
-	
+
 }
