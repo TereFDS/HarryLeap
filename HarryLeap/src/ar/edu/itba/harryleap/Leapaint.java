@@ -25,24 +25,23 @@ import javax.swing.JPanel;
 
 import com.leapmotion.leap.Controller;
 
-public class Leapaint extends JFrame
-{
-	//Static reference to this class.
+public class Leapaint extends JFrame {
+	// Static reference to this class.
 	private static Leapaint paint;
-	//X, Y and Z coordinates of the user's finger. These are set via the LeapaintListener class.
+	// X, Y and Z coordinates of the user's finger. These are set via the
+	// LeapaintListener class.
 	public int prevX = -1, prevY = -1;
 	public int x = -1, y = -1;
 	public double z = -1;
-	//Current drawing color.
+	// Current drawing color.
 	public Color inkColor = Color.MAGENTA;
-	
-	//Line data structure used to keep track of the lines we'll bedrawing.
-	public class Line
-	{
+
+	// Line data structure used to keep track of the lines we'll bedrawing.
+	public class Line {
 		public int startX, startY, endX, endY;
 		public Color color;
-		Line(int startX, int startY, int endX, int endY, Color color)
-		{
+
+		Line(int startX, int startY, int endX, int endY, Color color) {
 			this.startX = startX;
 			this.startY = startY;
 			this.endX = endX;
@@ -50,146 +49,146 @@ public class Leapaint extends JFrame
 			this.color = color;
 		}
 	}
-	//Lines drawn. We need to keep track of these, or they'll be lost every time the screen refreshes.
-		
+
+	// Lines drawn. We need to keep track of these, or they'll be lost every
+	// time the screen refreshes.
+
 	public List<Line> lines = new ArrayList<Line>();
-	//Leap-enabled buttons.
+	// Leap-enabled buttons.
 	public LeapButton button1, button2, button3, button4;
-	//Panels that we'll be drawing on.
+	// Panels that we'll be drawing on.
 	public JPanel buttonPanel;
 	public JPanel paintPanel;
-	public ImageManager backgroundImage = new ImageManager();
-	
-	Leapaint() { 
-		//Always call the superclass constructor when overriding Java Swing classes.
-		super("Leapaint - Place a finger in view to draw!");
-		//Configure the button panel.
+	public ImageManager images = new ImageManager();
+
+	Leapaint() {
+		// Always call the superclass constructor when overriding Java Swing
+		// classes.
+		super("The Harry Potter Game - Place a finger in view to cast a spell!");
+		// Configure the button panel.
+
+		System.out.println("fPosX: " + images.fPosX);
+		System.out.println("fPosY: " + images.fPosY);
+
 		buttonPanel = new JPanel(new FlowLayout());
 		buttonPanel.setBackground(new Color(215, 215, 215));
-		//Configure the buttons.
+		// Configure the buttons.
 		button1 = new LeapButton("Red", 1.5);
-		button1.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-			inkColor = Color.RED;
+		button1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				inkColor = Color.RED;
 			}
-			});
+		});
 
 		button2 = new LeapButton("Blue", 1.5);
-		button2.addActionListener(new ActionListener()
-		{
-		public void actionPerformed(ActionEvent e)
-			{
-			inkColor = Color.BLUE;
+		button2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				inkColor = Color.BLUE;
 			}
-			});
+		});
 		button3 = new LeapButton("Purple", 1.5);
-		button3.addActionListener(new ActionListener()
-		{
-		public void actionPerformed(ActionEvent e)
-			{
-			inkColor = Color.MAGENTA;
+		button3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				inkColor = Color.MAGENTA;
 			}
-			});
+		});
 		button4 = new LeapButton("Save", 1.5);
-		button4.addActionListener(new ActionListener()
-		{
-		public void actionPerformed(ActionEvent e)
-			{
-			saveImage("leapaint");
+		button4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				saveImage("leapaint");
 			}
-			});
-		//Add the buttons to the button panel.
+		});
+		// Add the buttons to the button panel.
 		buttonPanel.add(button1);
 		buttonPanel.add(button2);
 		buttonPanel.add(button3);
-		//Put a space between the color and save buttons.
+		// Put a space between the color and save buttons.
 		buttonPanel.add(Box.createVerticalStrut(1));
 		buttonPanel.add(button4);
-		//Configure the paint panel.
-		paintPanel = new JPanel()
-		{
-		public void paintComponent(Graphics g)
-		{
-			super.paintComponent(g);
-			BufferedImage bgImage = backgroundImage.getImage();
-			int x_image = 0, y_image = 0;
-			
 
-		    g.drawImage(bgImage, x_image, y_image,getWidth(), getHeight(), this);
-			//Setup the graphics.
-			Graphics2D g2 = (Graphics2D) g;
-			g2.setStroke(new BasicStroke(3));
-			
-			//Only start drawing if the user's finger is in view and not on the button panel.
-			if (z <= 0.5)
-				lines.add(new Line(prevX, prevY, x, y, inkColor));
-			//Draw all registered lines.
-			for (Line line : lines)
-				{
-				g2.setColor(line.color);
-				g2.drawLine(line.startX, line.startY, line.endX, line.endY);
+		// Configure the paint panel.
+		paintPanel = new JPanel() {
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				BufferedImage bgImage = images.getBackgroundImage();
+				int x_image = 0, y_image = 0;
+				BufferedImage featherImage = images.getFeatherImage();
+
+				g.drawImage(bgImage, x_image, y_image, getWidth(), getHeight(),
+						this);
+				g.drawImage(featherImage, images.getFeatherXPos(),
+						images.getFeatherYPos(), 170, 170, this);
+				// Setup the graphics.
+				Graphics2D g2 = (Graphics2D) g;
+				g2.setStroke(new BasicStroke(3));
+
+				// Only start drawing if the user's finger is in view and not on
+				// the button panel.
+				if (z <= 0.5)
+					lines.add(new Line(prevX, prevY, x, y, inkColor));
+				// Draw all registered lines.
+				for (Line line : lines) {
+					g2.setColor(line.color);
+					g2.drawLine(line.startX, line.startY, line.endX, line.endY);
 				}
-				//Repaint all the buttons.
-			buttonPanel.repaint();
-			
-			//Draw the cursor if a finger is within in view.
-			if (z <= 0.95 && z != -1.0)
-			{
-				//Set the cursor color to the inkColor if painting, and 		green otherwise.
-				g2.setColor((z <= 0.5) ? inkColor : new Color(0, 255, 153));
-				//Calculate cursor size based on depth for better feedback.
-				int cursorSize = (int) Math.max(20, 100 - z * 100);
-				//Create the cursor.
-				g2.fillOval(x, y, cursorSize, cursorSize);
+				// Repaint all the buttons.
+				buttonPanel.repaint();
+
+				// Draw the cursor if a finger is within in view.
+				if (z <= 0.95 && z != -1.0) {
+					// Set the cursor color to the inkColor if painting, and
+					// green otherwise.
+					g2.setColor((z <= 0.5) ? inkColor : new Color(0, 255, 153));
+					// Calculate cursor size based on depth for better feedback.
+					int cursorSize = (int) Math.max(20, 100 - z * 100);
+					// Create the cursor.
+					g2.fillOval(x, y, cursorSize, cursorSize);
+				}
 			}
-		}
 		};
-		
-		//Make sure the paint panel doesn't obscure any other elements.
+
+		// Make sure the paint panel doesn't obscure any other elements.
 		paintPanel.setOpaque(false);
-		
-		//Add the panels to the primary frame.
+
+		// Add the panels to the primary frame.
 		getContentPane().add(buttonPanel, BorderLayout.NORTH);
 		getContentPane().add(paintPanel);
 		getContentPane().setBackground(Color.black);
 
-		//Make sure the application exits on close.
+		// Make sure the application exits on close.
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//Set initial frame size and become visible.
+		// Set initial frame size and become visible.
 		setSize(800, 800);
 		setVisible(true);
 	}
-	
-	public void saveImage(String imageName) { 
-		
-		//Get the location and bounds of this JFrame.
+
+	public void saveImage(String imageName) {
+
+		// Get the location and bounds of this JFrame.
 		Point pos = getContentPane().getLocationOnScreen();
 		Rectangle screenRect = getContentPane().getBounds();
 		screenRect.x = pos.x;
 		screenRect.y = pos.y;
-		//Attempt to take a screen capture and pipe it to the image file.
-		try
-		{
-		BufferedImage capture = new Robot().createScreenCapture(screenRect);
-		ImageIO.write(capture, "bmp", new File(imageName + ".bmp"));
+		// Attempt to take a screen capture and pipe it to the image file.
+		try {
+			BufferedImage capture = new Robot().createScreenCapture(screenRect);
+			ImageIO.write(capture, "bmp", new File(imageName + ".bmp"));
+		} catch (Exception e) {
 		}
-		catch (Exception e) {}
-		
+
 	}
-	
-	//Member Function: main
-	public static void main(String args[])
-	{
-		//Create a new instance of the Leapaint class.
+
+	// Member Function: main
+	public static void main(String args[]) {
+		// Create a new instance of the Leapaint class.
 		paint = new Leapaint();
-		//Create a new listener and controller for the Leap Motion device.
+		// Create a new listener and controller for the Leap Motion device.
 		LeapaintListener listener = new LeapaintListener(paint);
 		Controller controller = new Controller();
-		//Start the listener.
+		// Start the listener.
 		controller.addListener(listener);
-		while (true) {}
+		while (true) {
+		}
 	}
-	
+
 }

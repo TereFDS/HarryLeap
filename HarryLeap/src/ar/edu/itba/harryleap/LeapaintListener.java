@@ -111,11 +111,16 @@ public class LeapaintListener extends Listener
 					switch (circleGesture.state()) {
 						case STATE_START:
 							isLifting = true;
+							paint.images.changeFeatherPositionUp();
 							break;
 						case STATE_UPDATE:
+							// Must update image position here!
+							paint.images.changeFeatherPositionUp();
 							break;
 						case STATE_STOP:
 							isLifting = false;
+						default:
+							break;
 					}
 
 					System.out.println("Circle gesture on frame: " + frameNumber);
@@ -133,7 +138,7 @@ public class LeapaintListener extends Listener
 						System.out.println(swipe.startPosition());
 						System.out.println(swipe.position());
 						System.out.println("Changing image on frame: " + frameNumber);
-						paint.backgroundImage.changeImage(true);
+						paint.images.changeImage(true);
 						//isSwiping = true;
 					}
 				}
