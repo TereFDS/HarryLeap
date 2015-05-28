@@ -1,7 +1,5 @@
 package ar.edu.itba.harryleap;
 
-import java.awt.Color;
-
 import com.leapmotion.leap.*;
 
 public class LeapaintListener extends Listener
@@ -122,6 +120,12 @@ public class LeapaintListener extends Listener
 
 				if(gesture.type() == Gesture.Type.TYPE_SWIPE) {
 					hasSwipe = true;
+					SwipeGesture swipe = (SwipeGesture) gesture;
+					Vector direction = swipe.direction();
+					System.out.println("eje x:" + direction.pitch());
+					
+					boolean forward= true;
+					
 					if (!isSwiping) {
 						System.out.println("Changing image on frame: " + frameNumber);
 						paint.backgroundImage.changeImage(true);
