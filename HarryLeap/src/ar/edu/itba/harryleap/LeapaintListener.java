@@ -24,6 +24,9 @@ public class LeapaintListener extends Listener
 	public void onInit(Controller controller)
 	{
 	System.out.println("Initialized");
+	Config config = controller.config();
+	System.out.println("swipe minLength: "+config.getFloat("Gesture.Swipe.MinLength"));
+	System.out.println("swipe minVelocity: "+config.getFloat("Gesture.Swipe.MinVelocity"));
 	}
 	
 	//Member Function: onConnect
@@ -49,6 +52,7 @@ public class LeapaintListener extends Listener
 		//Get the most recent frame.
 		frame = controller.frame();
 		controller.enableGesture(Gesture.Type.TYPE_SWIPE);
+		
 		//Detect if fingers are present.
 		if (!frame.tools().isEmpty())
 		{
@@ -107,6 +111,9 @@ public class LeapaintListener extends Listener
 				if(gesture.type() == Gesture.Type.TYPE_SWIPE)
 				{
 					paint.backgroundImage.changeImage();
+					System.out.println("------------------------------------------------------------------------------");
+					//Tell the painter to update.
+					paint.paintPanel.repaint();
 					//paint.getContentPane().setBackground(Color.blue);
 				} 
 
