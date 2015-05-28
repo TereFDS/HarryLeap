@@ -1,6 +1,7 @@
 package ar.edu.itba.harryleap;
 
 import com.leapmotion.leap.*;
+import com.leapmotion.leap.Gesture.State;
 
 public class LeapaintListener extends Listener
 {
@@ -13,14 +14,15 @@ public class LeapaintListener extends Listener
 
 	private long frameNumber;
 
-	boolean isSwiping;
+//	boolean isSwiping;
 	//Constructor.
 	
 	public LeapaintListener(Leapaint newPaint)
 	{
 		//Assign the Leapaint instance.
 		paint = newPaint;
-		isSwiping = false;
+		
+		//isSwiping = false;
 	}
 	
 	//Member Function: onInit
@@ -120,22 +122,25 @@ public class LeapaintListener extends Listener
 
 				if(gesture.type() == Gesture.Type.TYPE_SWIPE) {
 					hasSwipe = true;
-					SwipeGesture swipe = (SwipeGesture) gesture;
-					Vector direction = swipe.direction();
-					System.out.println("eje x:" + direction.pitch());
 					
+					SwipeGesture swipe = new SwipeGesture(gesture);
+								
 					boolean forward= true;
 					
-					if (!isSwiping) {
+					if (gesture.state()==State.STATE_STOP) {
+						float direction= swipe.startPosition().getX()-swipe.position().getX();
+						System.out.println("diference: "+direction);
+						System.out.println(swipe.startPosition());
+						System.out.println(swipe.position());
 						System.out.println("Changing image on frame: " + frameNumber);
 						paint.backgroundImage.changeImage(true);
-						isSwiping = true;
+						//isSwiping = true;
 					}
 				}
 
 			}
 		}
-		isSwiping = hasSwipe;
+//		isSwiping = hasSwipe;
 
 		if (changes) {
 			//Tell the painter to update.
