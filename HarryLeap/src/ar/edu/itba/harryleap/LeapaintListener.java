@@ -114,11 +114,12 @@ public class LeapaintListener extends Listener
 					switch (circleGesture.state()) {
 						case STATE_START:
 							isLifting = true;
-							paint.images.changeFeatherPositionUp();
+						
+							paint.images.changeFeatherPositionUp(paint.x);
 							break;
 						case STATE_UPDATE:
 							// Must update image position here!
-							paint.images.changeFeatherPositionUp();
+							paint.images.changeFeatherPositionUp(paint.x);
 							break;
 						case STATE_STOP:
 							isLifting = false;

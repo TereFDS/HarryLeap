@@ -124,13 +124,13 @@ public class Leapaint extends JFrame {
 
 				// Only start drawing if the user's finger is in view and not on
 				// the button panel.
-				if (z <= 0.5)
+				/*if (z <= 0.5)
 					lines.add(new Line(prevX, prevY, x, y, inkColor));
 				// Draw all registered lines.
 				for (Line line : lines) {
 					g2.setColor(line.color);
 					g2.drawLine(line.startX, line.startY, line.endX, line.endY);
-				}
+				}*/
 				// Repaint all the buttons.
 				buttonPanel.repaint();
 

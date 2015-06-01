@@ -61,16 +61,20 @@ public class ImageManager {
 		}
 	}
 	
-	public void changeFeatherPositionUp() {
+	public void changeFeatherPositionUp(int x) {
 		System.out.println("fPosY: " + fPosY);
 		if(fPosY > 10)
 			fPosY -= 2;
+		fPosX = x;
 		System.out.println("Changed feather position: " + fPosY);
 	}
 	
-	public void changeFeatherPositionDown() {
-		if(fPosY < 400)
+	public boolean changeFeatherPositionDown() {
+		if(fPosY < 500){
 			fPosY += 2;
+			return true;
+		}
+		return false;	
 	}
 
 }
