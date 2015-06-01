@@ -10,10 +10,13 @@ public class ImageManager {
 	static public int IMAGES_NUMBER = 3;
 	static String BG_IMAGES_PATH = "resources/background_";
 	static String FT_IMAGE_PATH = "resources/feather";
+	static String SP_IMAGE_PATH = "resources/wingardium_leviosa";
 	static String BG_IMAGE_EXTENSION = ".jpg";
 	static String FT_IMAGE_EXTENSION = ".png";
+	static String SP_IMAGE_EXTENSION = ".jpg";
 	BufferedImage backgroundImage = null;
 	BufferedImage featherImage = null;
+	BufferedImage spellImage = null;
 	int bg_index_image = 0;
 	int fPosX = 0;
 	int fPosY = 0;
@@ -25,6 +28,8 @@ public class ImageManager {
 					+ (bg_index_image + 1) + BG_IMAGE_EXTENSION));
 			featherImage = ImageIO.read(new File(FT_IMAGE_PATH
 					+ FT_IMAGE_EXTENSION));
+			spellImage = ImageIO.read(new File(SP_IMAGE_PATH
+					+ SP_IMAGE_EXTENSION));
 			fPosX = 300;
 			fPosY = 500;
 		} catch (IOException e) {
@@ -39,6 +44,10 @@ public class ImageManager {
 	
 	public BufferedImage getFeatherImage() {
 		return featherImage;
+	}
+	
+	public BufferedImage getSpellImage() {
+		return spellImage;
 	}
 	
 	public int getFeatherXPos() {

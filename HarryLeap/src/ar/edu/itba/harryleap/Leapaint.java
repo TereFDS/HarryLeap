@@ -35,7 +35,8 @@ public class Leapaint extends JFrame {
 	public double z = -1;
 	// Current drawing color.
 	public Color inkColor = Color.MAGENTA;
-
+	public boolean begin_Spell = false;
+	
 	// Line data structure used to keep track of the lines we'll bedrawing.
 	public class Line {
 		public int startX, startY, endX, endY;
@@ -60,6 +61,7 @@ public class Leapaint extends JFrame {
 	public JPanel buttonPanel;
 	public JPanel paintPanel;
 	public ImageManager images = new ImageManager();
+	public AudioManager sounds = new AudioManager();
 
 	Leapaint() {
 		// Always call the superclass constructor when overriding Java Swing
@@ -113,11 +115,16 @@ public class Leapaint extends JFrame {
 				BufferedImage bgImage = images.getBackgroundImage();
 				int x_image = 0, y_image = 0;
 				BufferedImage featherImage = images.getFeatherImage();
-
+				
 				g.drawImage(bgImage, x_image, y_image, getWidth(), getHeight(),
 						this);
 				g.drawImage(featherImage, images.getFeatherXPos(),
 						images.getFeatherYPos(), 170, 170, this);
+				
+				if(begin_Spell){
+					BufferedImage spellImage = images.getSpellImage();
+					g.drawImage(spellImage, 0, 0, 170, 170, this);
+				}
 				// Setup the graphics.
 				Graphics2D g2 = (Graphics2D) g;
 				g2.setStroke(new BasicStroke(3));

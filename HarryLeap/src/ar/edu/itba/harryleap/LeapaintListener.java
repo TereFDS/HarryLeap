@@ -1,5 +1,8 @@
 package ar.edu.itba.harryleap;
 
+import java.applet.Applet;
+import java.awt.Toolkit;
+
 import com.leapmotion.leap.*;
 import com.leapmotion.leap.Gesture.State;
 
@@ -102,6 +105,7 @@ public class LeapaintListener extends Listener
 		}
 		else{
 			if(paint.images.changeFeatherPositionDown()){
+				paint.begin_Spell = false;
 				changes = true;
 			}
 		}
@@ -119,15 +123,18 @@ public class LeapaintListener extends Listener
 					switch (circleGesture.state()) {
 						case STATE_START:
 							isLifting = true;
-						
+							paint.begin_Spell = true;
+							paint.sounds.playSpellSound();
 							paint.images.changeFeatherPositionUp(paint.x);
 							break;
 						case STATE_UPDATE:
+
 							// Must update image position here!
 							paint.images.changeFeatherPositionUp(paint.x);
 							break;
 						case STATE_STOP:
 							isLifting = false;
+							paint.begin_Spell = false;
 						default:
 							break;
 					}
