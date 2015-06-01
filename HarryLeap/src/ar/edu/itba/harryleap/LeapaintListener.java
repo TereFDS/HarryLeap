@@ -96,6 +96,9 @@ public class LeapaintListener extends Listener
 				paint.y = (int) position.getY();
 				paint.z = position.getZ();
 			}
+			else{
+				paint.images.changeFeatherPositionDown();
+			}
 		}
 
 		boolean hasSwipe = false;
