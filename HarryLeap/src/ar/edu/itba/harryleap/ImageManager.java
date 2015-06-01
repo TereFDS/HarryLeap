@@ -70,7 +70,7 @@ public class ImageManager {
 	}
 	
 	public boolean changeFeatherPositionDown() {
-		if(fPosY < 500){
+		if(fPosY < 400){
 			fPosY += 2;
 			return true;
 		}

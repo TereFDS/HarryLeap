@@ -100,6 +100,11 @@ public class LeapaintListener extends Listener
 				paint.images.changeFeatherPositionDown();
 			}
 		}
+		else{
+			if(paint.images.changeFeatherPositionDown()){
+				changes = true;
+			}
+		}
 
 		boolean hasSwipe = false;
 		if (!frame.gestures().isEmpty())
@@ -155,6 +160,7 @@ public class LeapaintListener extends Listener
 			//Tell the painter to update.
 			paint.paintPanel.repaint();
 		}
+
 	}
 
 }
