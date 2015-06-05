@@ -1,33 +1,26 @@
 package ar.edu.itba.harryleap;
 
 import java.awt.BasicStroke;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Robot;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.leapmotion.leap.Controller;
 
-public class Leapaint extends JFrame {
+public class LeapHarry extends JFrame {
 	// Static reference to this class.
-	private static Leapaint paint;
+	private static LeapHarry paint;
 	// X, Y and Z coordinates of the user's finger. These are set via the
 	// LeapaintListener class.
 	public int prevX = -1, prevY = -1;
@@ -57,22 +50,17 @@ public class Leapaint extends JFrame {
 	public List<Line> lines = new ArrayList<Line>();
 	// Leap-enabled buttons.
 	// Panels that we'll be drawing on.
-	//public JPanel buttonPanel;
 	public JPanel paintPanel;
 	public ImageManager images = new ImageManager();
 	public AudioManager sounds = new AudioManager();
 
-	Leapaint() {
+	LeapHarry() {
 		// Always call the superclass constructor when overriding Java Swing
 		// classes.
 		super("The Harry Potter Game - Place a finger in view to cast a spell!");
-		// Configure the button panel.
-
+		
 		System.out.println("fPosX: " + images.fPosX);
 		System.out.println("fPosY: " + images.fPosY);
-
-		//buttonPanel = new JPanel(new FlowLayout());
-		//buttonPanel.setBackground(new Color(215, 215, 215));
 
 		// Configure the paint panel.
 		paintPanel = new JPanel() {
@@ -94,28 +82,7 @@ public class Leapaint extends JFrame {
 				// Setup the graphics.
 				Graphics2D g2 = (Graphics2D) g;
 				g2.setStroke(new BasicStroke(3));
-
-				// Only start drawing if the user's finger is in view and not on
-				// the button panel.
-				/*if (z <= 0.5)
-					lines.add(new Line(prevX, prevY, x, y, inkColor));
-				// Draw all registered lines.
-				for (Line line : lines) {
-					g2.setColor(line.color);
-					g2.drawLine(line.startX, line.startY, line.endX, line.endY);
-				}*/
 				
-
-				// Draw the cursor if a finger is within in view.
-				if (z <= 0.95 && z != -1.0) {
-					// Set the cursor color to the inkColor if painting, and
-					// green otherwise.
-					g2.setColor((z <= 0.5) ? inkColor : new Color(0, 255, 153));
-					// Calculate cursor size based on depth for better feedback.
-					int cursorSize = (int) Math.max(20, 100 - z * 100);
-					// Create the cursor.
-					g2.fillOval(x, y, cursorSize, cursorSize);
-				}
 			}
 		};
 
@@ -123,7 +90,6 @@ public class Leapaint extends JFrame {
 		paintPanel.setOpaque(false);
 
 		// Add the panels to the primary frame.
-		//getContentPane().add(buttonPanel, BorderLayout.NORTH);
 		getContentPane().add(paintPanel);
 		getContentPane().setBackground(Color.black);
 
@@ -152,10 +118,10 @@ public class Leapaint extends JFrame {
 
 	// Member Function: main
 	public static void main(String args[]) {
-		// Create a new instance of the Leapaint class.
-		paint = new Leapaint();
+		// Create a new instance of the LeapHarry class.
+		paint = new LeapHarry();
 		// Create a new listener and controller for the Leap Motion device.
-		LeapaintListener listener = new LeapaintListener(paint);
+		LeapHarryListener listener = new LeapHarryListener(paint);
 		Controller controller = new Controller();
 		// Start the listener.
 		controller.addListener(listener);

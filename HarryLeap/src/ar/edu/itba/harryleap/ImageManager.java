@@ -33,7 +33,6 @@ public class ImageManager {
 			fPosX = 300;
 			fPosY = 500;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -79,7 +78,7 @@ public class ImageManager {
 	}
 	
 	public boolean changeFeatherPositionDown() {
-		if(fPosY < 400){
+		if(fPosY < 500){
 			fPosY += 2;
 			return true;
 		}
