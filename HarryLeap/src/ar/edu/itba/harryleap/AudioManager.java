@@ -37,29 +37,35 @@ public class AudioManager {
 
 	
 	public void playSpellSound(){
-		try{
-			try {
-	            Clip clip = AudioSystem.getClip();
-	            clip.open(spellSound);
-	            try {
-	                clip.start();
-	                try {
-	                    Thread.sleep(100);
-	                } catch (InterruptedException e) {
-	                    e.printStackTrace();
-	                }
-	                clip.drain();
-	            } finally {
-	                clip.close();
-	            }
-	        } catch (LineUnavailableException e) {
-	            e.printStackTrace();
-	        } finally {
-	            spellSound.close();
-	        }
-		}catch (Exception e){
-	        e.printStackTrace();
-		}
+		Thread t =new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try{
+					try {
+			            Clip clip = AudioSystem.getClip();
+			            clip.open(spellSound);
+			            try {
+			                clip.start();
+			                try {
+			                    Thread.sleep(100);
+			                } catch (InterruptedException e) {
+			                    e.printStackTrace();
+			                }
+			                clip.drain();
+			            } finally {
+			                clip.close();
+			            }
+			        } catch (LineUnavailableException e) {
+			            e.printStackTrace();
+			        } finally {
+			            spellSound.close();
+			        }
+				}catch (Exception e){
+			        e.printStackTrace();
+				}			
+			}
+		});
+		t.start();
 	}
 	
 }
