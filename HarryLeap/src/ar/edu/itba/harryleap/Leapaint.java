@@ -56,9 +56,8 @@ public class Leapaint extends JFrame {
 
 	public List<Line> lines = new ArrayList<Line>();
 	// Leap-enabled buttons.
-	public LeapButton button1, button2, button3, button4;
 	// Panels that we'll be drawing on.
-	public JPanel buttonPanel;
+	//public JPanel buttonPanel;
 	public JPanel paintPanel;
 	public ImageManager images = new ImageManager();
 	public AudioManager sounds = new AudioManager();
@@ -72,41 +71,8 @@ public class Leapaint extends JFrame {
 		System.out.println("fPosX: " + images.fPosX);
 		System.out.println("fPosY: " + images.fPosY);
 
-		buttonPanel = new JPanel(new FlowLayout());
-		buttonPanel.setBackground(new Color(215, 215, 215));
-		// Configure the buttons.
-		button1 = new LeapButton("Red", 1.5);
-		button1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				inkColor = Color.RED;
-			}
-		});
-
-		button2 = new LeapButton("Blue", 1.5);
-		button2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				inkColor = Color.BLUE;
-			}
-		});
-		button3 = new LeapButton("Purple", 1.5);
-		button3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				inkColor = Color.MAGENTA;
-			}
-		});
-		button4 = new LeapButton("Save", 1.5);
-		button4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				saveImage("leapaint");
-			}
-		});
-		// Add the buttons to the button panel.
-		buttonPanel.add(button1);
-		buttonPanel.add(button2);
-		buttonPanel.add(button3);
-		// Put a space between the color and save buttons.
-		buttonPanel.add(Box.createVerticalStrut(1));
-		buttonPanel.add(button4);
+		//buttonPanel = new JPanel(new FlowLayout());
+		//buttonPanel.setBackground(new Color(215, 215, 215));
 
 		// Configure the paint panel.
 		paintPanel = new JPanel() {
@@ -138,8 +104,7 @@ public class Leapaint extends JFrame {
 					g2.setColor(line.color);
 					g2.drawLine(line.startX, line.startY, line.endX, line.endY);
 				}*/
-				// Repaint all the buttons.
-				buttonPanel.repaint();
+				
 
 				// Draw the cursor if a finger is within in view.
 				if (z <= 0.95 && z != -1.0) {
@@ -158,7 +123,7 @@ public class Leapaint extends JFrame {
 		paintPanel.setOpaque(false);
 
 		// Add the panels to the primary frame.
-		getContentPane().add(buttonPanel, BorderLayout.NORTH);
+		//getContentPane().add(buttonPanel, BorderLayout.NORTH);
 		getContentPane().add(paintPanel);
 		getContentPane().setBackground(Color.black);
 
